@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.Properties;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 public class NCalcMain extends javax.swing.JFrame {
 
@@ -197,7 +198,9 @@ public class NCalcMain extends javax.swing.JFrame {
         Properties conffile = new Properties();
         try {
             conffile.load(new FileInputStream("config.yml"));
-        } catch(IOException ex) {}
+        } catch(IOException ex) {
+            System.out.println(ex);
+        }
         
         int X = (int) xin.getValue();
         int Z = (int) zin.getValue();
@@ -242,12 +245,34 @@ public class NCalcMain extends javax.swing.JFrame {
         Properties conffile = new Properties();
         try {
             conffile.load(new FileInputStream("config.yml"));
-        } catch(IOException ex) {}
+        } catch(IOException ex) {
+            System.out.println(ex);
+        }
         
         // Copyright
         System.out.println("Copyright SanyaSho " + year + ". All right reserved.");
         System.out.println("The source code can be found here: " + srclink);
         System.out.println("Version: " + appversion);
+        
+        if(conffile.getProperty("lang").startsWith("English")) {
+            System.out.println("Language: " + conffile.getProperty("lang"));
+            
+            modetext.setText("Mode:");
+            langtext.setText("Language:");
+            calculate.setText("Calculate");
+            save.setText("Save");
+            lang.setSelectedItem("English");
+        }
+        
+        if(conffile.getProperty("lang").startsWith("Russian")) {
+            System.out.println("Language: " + conffile.getProperty("lang"));
+            
+            modetext.setText("Режим:");
+            langtext.setText("Язык:");
+            calculate.setText("Рассчитать");
+            save.setText("Сохр.");
+            lang.setSelectedItem("Russian");
+        }
         
         // Config
         File configfile = new File("config.yml");
@@ -256,7 +281,9 @@ public class NCalcMain extends javax.swing.JFrame {
             try {
                 configfile.createNewFile();
                 result = true;
-            } catch(SecurityException | IOException se) {} if(result) {}
+            } catch(SecurityException | IOException se) {
+                System.out.println(se);
+            } if(result) {}
         }
         
     }//GEN-LAST:event_ncalcopened
@@ -267,7 +294,9 @@ public class NCalcMain extends javax.swing.JFrame {
         Properties conffile = new Properties();
         try {
             conffile.load(new FileInputStream("config.yml"));
-        } catch(IOException ex) {}
+        } catch(IOException ex) {
+            System.out.println(ex);
+        }
         
         // Write config
         Properties writeconfigfile = new Properties();
@@ -278,7 +307,19 @@ public class NCalcMain extends javax.swing.JFrame {
             // Write
             writeconfigfile.store(new FileOutputStream("config.yml"), null);
             
-        } catch (FileNotFoundException ex) {} catch (IOException ex) {}
+        } catch (FileNotFoundException ex) {
+            System.out.println(ex);
+        } catch (IOException ex) {
+            System.out.println(ex);
+        }
+        
+        if(conffile.getProperty("lang").startsWith("English")) {
+            JOptionPane.showMessageDialog(rootPane, "Please, restart application.", "Warning", JOptionPane.WARNING_MESSAGE);
+        }
+        
+        if(conffile.getProperty("lang").startsWith("Russian")) {
+            JOptionPane.showMessageDialog(rootPane, "Пожалуйста, перезапустите приложение.", "Внимание", JOptionPane.WARNING_MESSAGE);
+        }
         
     }//GEN-LAST:event_saveActionPerformed
 
