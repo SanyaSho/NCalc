@@ -6,7 +6,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
-import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
@@ -205,38 +204,73 @@ public class NCalcMain extends javax.swing.JFrame {
         int X = (int) xin.getValue();
         int Z = (int) zin.getValue();
         
-        if(mode.getSelectedItem() == "Nether to Overworld") {
+        if(conffile.getProperty("lang").startsWith("Russian")) {
+            if(mode.getSelectedItem() == "Нижний в Обычный мир") {
+                
+                String XEND = String.valueOf(X*8);
+                String ZEND = String.valueOf(Z*8);
             
-            String XEND = String.valueOf(X*8);
-            String ZEND = String.valueOf(Z*8);
+                xout.setText(XEND);
+                zout.setText(ZEND);
             
-            xout.setText(XEND);
-            zout.setText(ZEND);
+                // Very good code.
+                System.out.println("=-=-=-=-=-=-={CALC}=-=-=-=-=-=-=");
+                System.out.println("Режим: " + mode.getSelectedItem());
+                System.out.println("X в Обычном мире: " + XEND + "; X в Нижнем мире: " + xin.getValue());
+                System.out.println("Z в Обычном мире: " + ZEND + "; Z в Нижнем мире: " + zin.getValue());
+                System.out.println("=-=-=-=-=-=-={GOOD}=-=-=-=-=-=-=");
             
-            System.out.println("=-=-=-=-=-=-={CALC}=-=-=-=-=-=-=");
-            // Very good code.
-            System.out.println("Mode: " + mode.getSelectedItem());
-            System.out.println("X in Overworld: " + XEND + "; X in Nether: " + xin.getValue());
-            System.out.println("Z in Overworld: " + ZEND + "; Z in Nether: " + zin.getValue());
-            System.out.println("=-=-=-=-=-=-={GOOD}=-=-=-=-=-=-=");
+            } else {
+                
+                String XEND = String.valueOf(X/8);
+                String ZEND = String.valueOf(Z/8);
+                
+                xout.setText(XEND);
+                zout.setText(ZEND);
+                
+                // Very good code. (X2)
+                System.out.println("=-=-=-=-=-=-={CALC}=-=-=-=-=-=-=");
+                System.out.println("Режим: " + mode.getSelectedItem());
+                System.out.println("X в Нижнем мире: " + XEND + "; X в Обычном мире: " + xin.getValue());
+                System.out.println("Z в Нижнем мире: " + ZEND + "; Z в Обычном мире: " + zin.getValue());
+                System.out.println("=-=-=-=-=-=-={GOOD}=-=-=-=-=-=-=");
+                
+            }
             
-        } else {
-            
-            String XEND = String.valueOf(X/8);
-            String ZEND = String.valueOf(Z/8);
-            
-            xout.setText(XEND);
-            zout.setText(ZEND);
-            
-            System.out.println("=-=-=-=-=-=-={CALC}=-=-=-=-=-=-=");
-            // Very good code. (X2)
-            System.out.println("Mode: " + mode.getSelectedItem());
-            System.out.println("X in Nether: " + XEND + "; X in Overworld: " + xin.getValue());
-            System.out.println("Z in Nether: " + ZEND + "; Z in Overworld: " + zin.getValue());
-            System.out.println("=-=-=-=-=-=-={GOOD}=-=-=-=-=-=-=");
-            
-        }
+        } 
         
+        if(conffile.getProperty("lang").startsWith("English")) {
+            if(mode.getSelectedItem() == "Nether to Overworld") {
+                
+                String XEND = String.valueOf(X*8);
+                String ZEND = String.valueOf(Z*8);
+                
+                xout.setText(XEND);
+                zout.setText(ZEND);
+                
+                // Very good code.
+                System.out.println("=-=-=-=-=-=-={CALC}=-=-=-=-=-=-=");
+                System.out.println("Mode: " + mode.getSelectedItem());
+                System.out.println("X in Overworld: " + XEND + "; X in Nether: " + xin.getValue());
+                System.out.println("Z in Overworld: " + ZEND + "; Z in Nether: " + zin.getValue());
+                System.out.println("=-=-=-=-=-=-={GOOD}=-=-=-=-=-=-=");
+                
+            } else {
+                
+                String XEND = String.valueOf(X/8);
+                String ZEND = String.valueOf(Z/8);
+                
+                xout.setText(XEND);
+                zout.setText(ZEND);
+                
+                // Very good code. (X2)
+                System.out.println("=-=-=-=-=-=-={CALC}=-=-=-=-=-=-=");
+                System.out.println("Mode: " + mode.getSelectedItem());
+                System.out.println("X in Nether: " + XEND + "; X in Overworld: " + xin.getValue());
+                System.out.println("Z in Nether: " + ZEND + "; Z in Overworld: " + zin.getValue());
+                System.out.println("=-=-=-=-=-=-={GOOD}=-=-=-=-=-=-=");
+            }
+        }
     }//GEN-LAST:event_calculateActionPerformed
 
     private void ncalcopened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_ncalcopened
@@ -249,12 +283,10 @@ public class NCalcMain extends javax.swing.JFrame {
             System.out.println(ex);
         }
         
-        // Copyright
-        System.out.println("Copyright SanyaSho " + year + ". All right reserved.");
-        System.out.println("The source code can be found here: " + srclink);
-        System.out.println("Version: " + appversion);
-        
         if(conffile.getProperty("lang").startsWith("English")) {
+            System.out.println("Copyright SanyaSho " + year + ". All right reserved.");
+            System.out.println("The source code can be found here: " + srclink);
+            System.out.println("Version: " + appversion);
             System.out.println("Language: " + conffile.getProperty("lang"));
             
             modetext.setText("Mode:");
@@ -262,16 +294,21 @@ public class NCalcMain extends javax.swing.JFrame {
             calculate.setText("Calculate");
             save.setText("Save");
             lang.setSelectedItem("English");
+            mode.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nether to Overworld", "Overworld to Nether" }));
         }
         
         if(conffile.getProperty("lang").startsWith("Russian")) {
-            System.out.println("Language: " + conffile.getProperty("lang"));
+            System.out.println("Копирайт SanyaSho " + year + ". Все права защищены.");
+            System.out.println("Исходный код может быть найден здесь: " + srclink);
+            System.out.println("Версия: " + appversion);
+            System.out.println("Язык: " + conffile.getProperty("lang"));
             
             modetext.setText("Режим:");
             langtext.setText("Язык:");
             calculate.setText("Рассчитать");
             save.setText("Сохр.");
             lang.setSelectedItem("Russian");
+            mode.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Нижний в Обычный мир", "Обычный в Нижний мир" }));
         }
         
         // Config
