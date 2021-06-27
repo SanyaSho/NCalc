@@ -13,8 +13,8 @@ import javax.swing.JOptionPane;
 public class NCalcMain extends javax.swing.JFrame {
 
     public String year = "2021";
-    public String srclink = "https://github.com/SanyaSho/NCalc";
-    public String appversion = "1.0";
+    public String srclink = "https://github.com/SanyaSho/NCalc/tree/tests";
+    public String appversion = "1.1-alpha";
     
     public NCalcMain() {
         initComponents();
