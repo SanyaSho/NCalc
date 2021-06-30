@@ -15,7 +15,6 @@ public class NCalcMain extends javax.swing.JFrame {
 
     public static String year = "2021";
     public static String srclink = "https://github.com/SanyaSho/NCalc/tree/tests";
-    public static String appversion = "1.1-alpha";
     public static String issueslink = "https://github.com/SanyaSho/NCalc/issues";
     
     public NCalcMain() {
