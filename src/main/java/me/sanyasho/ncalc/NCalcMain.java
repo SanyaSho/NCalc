@@ -1,20 +1,19 @@
 package me.sanyasho.ncalc;
 
 import java.awt.Desktop;
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Properties;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+import static me.sanyasho.ncalc.NCalcPreMain.datadir;
 
 public class NCalcMain extends javax.swing.JFrame {
-
+    
     public static String year = "2021";
-    public static String srclink = "https://github.com/SanyaSho/NCalc/tree/tests";
+    public static String srclink = "https://github.com/SanyaSho/NCalc";
     public static String issueslink = "https://github.com/SanyaSho/NCalc/issues";
     
     public NCalcMain() {
@@ -42,11 +41,12 @@ public class NCalcMain extends javax.swing.JFrame {
         mainmenu = new javax.swing.JMenu();
         menusettings = new javax.swing.JMenuItem();
         menureport = new javax.swing.JMenuItem();
+        menumanual = new javax.swing.JMenuItem();
         menuquit = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Nether Calculator - Main");
-        setIconImage(new ImageIcon(getClass().getResource("/assets/textures/gui/icon.png")).getImage());
+        setIconImage(new ImageIcon(getClass().getResource("/icons/icon.png")).getImage());
         setLocationByPlatform(true);
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -87,7 +87,7 @@ public class NCalcMain extends javax.swing.JFrame {
                 .addComponent(xin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(xout, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 12, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         zpanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Z"));
@@ -147,20 +147,25 @@ public class NCalcMain extends javax.swing.JFrame {
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(mainpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(zpanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(xpanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(zpanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jSeparator2)
+                    .addComponent(xpanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(calculate)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         mainmenu.setText("Menu");
+        mainmenu.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                mainmenuMouseReleased(evt);
+            }
+        });
 
         menusettings.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        menusettings.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/textures/gui/dynmap/markers/gear.png"))); // NOI18N
+        menusettings.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/preferences-desktop.png"))); // NOI18N
         menusettings.setText("Options");
         menusettings.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -170,7 +175,7 @@ public class NCalcMain extends javax.swing.JFrame {
         mainmenu.add(menusettings);
 
         menureport.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_B, java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        menureport.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/textures/gui/dynmap/markers/comment.png"))); // NOI18N
+        menureport.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/mail-send-receive.png"))); // NOI18N
         menureport.setText("Report bugs");
         menureport.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -179,8 +184,18 @@ public class NCalcMain extends javax.swing.JFrame {
         });
         mainmenu.add(menureport);
 
+        menumanual.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_H, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        menumanual.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/help-browser.png"))); // NOI18N
+        menumanual.setText("Manual");
+        menumanual.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menumanualActionPerformed(evt);
+            }
+        });
+        mainmenu.add(menumanual);
+
         menuquit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        menuquit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/textures/gui/dynmap/markers/cross.png"))); // NOI18N
+        menuquit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/system-log-out.png"))); // NOI18N
         menuquit.setText("Quit");
         menuquit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -214,23 +229,23 @@ public class NCalcMain extends javax.swing.JFrame {
         
         Properties conffile = new Properties();
         try {
-            conffile.load(new FileInputStream("config.yml"));
+            conffile.load(new FileInputStream(datadir + "config.yml"));
         } catch(IOException ex) {
             System.out.println("[Main] -> " + ex);
         }
         
         Properties enus = new Properties();
         try {
-            enus.load(NCalcMain.class.getResourceAsStream("/assets/lang/en_US.properties"));
+            enus.load(NCalcMain.class.getResourceAsStream("/lang/en_US.properties"));
         } catch(IOException ex) {
-            System.out.println("[Main] -> " + ex);
+            System.out.println("[Main] -> [FATAL] -> " + ex);
         }
         
         Properties ruru = new Properties();
         try {
-            ruru.load(NCalcMain.class.getResourceAsStream("/assets/lang/ru_RU.properties"));
+            ruru.load(NCalcMain.class.getResourceAsStream("/lang/ru_RU.properties"));
         } catch(IOException ex) {
-            System.out.println("[Main] -> " + ex);
+            System.out.println("[Main] -> [FATAL] -> " + ex);
         }
         
         int X = (int) xin.getValue();
@@ -278,7 +293,7 @@ public class NCalcMain extends javax.swing.JFrame {
                 xout.setText(XEND);
                 zout.setText(ZEND);
             
-                // Very good code.
+                // Very good code. (X3)
                 System.out.println("=-=-=-=-=-=-={CALC}=-=-=-=-=-=-=");
                 System.out.println("Режим: " + mode.getSelectedItem());
                 System.out.println("X в Обычном мире: " + XEND + "; X в Нижнем мире: " + xin.getValue());
@@ -293,7 +308,7 @@ public class NCalcMain extends javax.swing.JFrame {
                 xout.setText(XEND);
                 zout.setText(ZEND);
                 
-                // Very good code. (X2)
+                // Very good code. (X4)
                 System.out.println("=-=-=-=-=-=-={CALC}=-=-=-=-=-=-=");
                 System.out.println("Режим: " + mode.getSelectedItem());
                 System.out.println("X в Нижнем мире: " + XEND + "; X в Обычном мире: " + xin.getValue());
@@ -308,28 +323,23 @@ public class NCalcMain extends javax.swing.JFrame {
 
     private void ncalcopened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_ncalcopened
         
-        System.setProperty("devmode", "0");
-        if(System.getProperty("devmode").startsWith("1")) {
-            System.out.println("[CLASS] -> " + '"'+NCalcMain.class.getName()+'"');
-        } else {}
-        
         Properties conffile = new Properties();
         try {
-            conffile.load(new FileInputStream("config.yml"));
+            conffile.load(new FileInputStream(datadir + "config.yml"));
         } catch(IOException ex) {
             System.out.println("[Main] -> " + ex);
         }
         
         Properties enus = new Properties();
         try {
-            enus.load(NCalcMain.class.getResourceAsStream("/assets/lang/en_US.properties"));
+            enus.load(NCalcMain.class.getResourceAsStream("/lang/en_US.properties"));
         } catch(IOException ex) {
             System.out.println("[Main] -> " + ex);
         }
         
         Properties ruru = new Properties();
         try {
-            ruru.load(NCalcMain.class.getResourceAsStream("/assets/lang/ru_RU.properties"));
+            ruru.load(NCalcMain.class.getResourceAsStream("/lang/ru_RU.properties"));
         } catch(IOException ex) {
             System.out.println("[Main] -> " + ex);
         }
@@ -340,6 +350,7 @@ public class NCalcMain extends javax.swing.JFrame {
             mainmenu.setText(enus.getProperty("mainmenu"));
             menusettings.setText(enus.getProperty("menusettings"));
             menureport.setText(enus.getProperty("menureport"));
+            menumanual.setText(enus.getProperty("menumanual"));
             menuquit.setText(enus.getProperty("menuquit"));
             modetext.setText(enus.getProperty("modetext") + ":");
             calculate.setText(enus.getProperty("calculate"));
@@ -350,6 +361,7 @@ public class NCalcMain extends javax.swing.JFrame {
             mainmenu.setText(ruru.getProperty("mainmenu"));
             menusettings.setText(ruru.getProperty("menusettings"));
             menureport.setText(ruru.getProperty("menureport"));
+            menumanual.setText(ruru.getProperty("menumanual"));
             menuquit.setText(ruru.getProperty("menuquit"));
             modetext.setText(ruru.getProperty("modetext") + ":");
             calculate.setText(ruru.getProperty("calculate"));
@@ -385,82 +397,54 @@ public class NCalcMain extends javax.swing.JFrame {
         this.setVisible(false);
     }//GEN-LAST:event_menusettingsActionPerformed
 
-    public static void main(String args[]) {
-        
-        File configfile = new File("config.yml");
-        if (!configfile.exists()) {
-            boolean result = false;
-            try {
-                configfile.createNewFile();
-                result = true;
-            } catch(SecurityException | IOException se) {
-                System.out.println("[Pre-Main] -> " + se);
-            } if(result) {}
-        }
-        
+    private void menumanualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menumanualActionPerformed
+        // Open manual window
+        new NCalcManual().setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_menumanualActionPerformed
+
+    private void mainmenuMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mainmenuMouseReleased
+        // ???
+
         Properties conffile = new Properties();
         try {
-            conffile.load(new FileInputStream("config.yml"));
+            conffile.load(new FileInputStream(datadir + "config.yml"));
         } catch(IOException ex) {
-            System.out.println("[Pre-Main] -> " + ex);
+            System.out.println("[Main] -> " + ex);
+        }
+
+        if(xout.getText().startsWith("30000000") && zout.getText().startsWith("30000000")) {
+            this.setTitle("Far Lands are not so far");
+        }
+
+        if(xout.getText().startsWith("12550821") && zout.getText().startsWith("12550821")) {
+            this.setTitle("Good luck");
         }
         
-        if(conffile.isEmpty()) {
-            Properties writeconfigfile = new Properties();
-            try {
-                writeconfigfile.setProperty("lang", "en_US");
-                writeconfigfile.setProperty("defmode", "1");
-                writeconfigfile.store(new FileOutputStream("config.yml"), null);
-            } catch (FileNotFoundException ex) {
-                System.out.println("[Pre-Main] -> " + ex);
-            } catch (IOException ex) {
-                System.out.println("[Pre-Main] -> [FATAL] -> " + ex);
-            }
+        if(xout.getText().startsWith("EXIT") && zout.getText().startsWith("PLEASE") || xout.getText().startsWith("QUIT") && zout.getText().startsWith("PLEASE")) {
+            System.exit(0);
         }
         
-        Properties enus = new Properties();
-        try {
-            enus.load(NCalcMain.class.getResourceAsStream("/assets/lang/en_US.properties"));
-        } catch(IOException ex) {
-            System.out.println("[Pre-Main] -> [FATAL] -> " + ex);
+        if(conffile.getProperty("lang").startsWith("20140626")) {
+            
+            this.setResizable(true);
+            
+            this.setTitle("1.7.10 is not the best");
+            mode.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1.7.10 is not the best", "1.7.10 is not the best" }));
+            mainmenu.setText("1.7.10 is not the best");
+            menusettings.setText("1.7.10 is not the best");
+            menureport.setText("1.7.10 is not the best");
+            menumanual.setText("1.7.10 is not the best");
+            menuquit.setText("1.7.10 is not the best");
+            modetext.setText("1.7.10 is not the best");
+            calculate.setText("1.7.10 is not the best");
+            xpanel.setBorder(javax.swing.BorderFactory.createTitledBorder("1.7.10 is not the best"));
+            zpanel.setBorder(javax.swing.BorderFactory.createTitledBorder("1.7.10 is not the best"));
+            xout.setText("1.7.10 is not the best");
+            zout.setText("1.7.10 is not the best");
         }
-        
-        Properties ruru = new Properties();
-        try {
-            ruru.load(NCalcMain.class.getResourceAsStream("/assets/lang/ru_RU.properties"));
-        } catch(IOException ex) {
-            System.out.println("[Pre-Main] -> [FATAL] -> " + ex);
-        }
-        
-        Properties misc = new Properties();
-        try {
-            misc.load(NCalcMain.class.getResourceAsStream("/assets/lang/misc.properties"));
-        } catch(IOException ex) {
-            System.out.println("[Pre-Main] -> [FATAL] -> " + ex);
-        }
-        
-        System.out.println("====================================================");
-        System.out.println("Copyright " + misc.getProperty("ncalcauthor") + " " + year + ". All right reserved.");
-        System.out.println("Source code: " + srclink);
-        System.out.println("Version: " + misc.getProperty("ncalcver"));
-        System.out.println("Language: " + conffile.getProperty("lang"));
-        System.out.println("====================================================");
-        
-        /*
-        if(conffile.getProperty("lang").startsWith("ru_RU")) {
-            System.out.println("====================================================");
-            System.out.println("Копирайт " + misc.getProperty("ncalcauthor") + " " + year + ". Все права защищены.");
-            System.out.println("Исходный код: " + srclink);
-            System.out.println("Версия: " + misc.getProperty("ncalcver"));
-            System.out.println("Язык: " + conffile.getProperty("lang"));
-            System.out.println("====================================================");
-        }
-        */
-        
-        java.awt.EventQueue.invokeLater(() -> {
-            new NCalcMain().setVisible(true);
-        });
-    }
+
+    }//GEN-LAST:event_mainmenuMouseReleased
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton calculate;
@@ -470,6 +454,7 @@ public class NCalcMain extends javax.swing.JFrame {
     private javax.swing.JMenu mainmenu;
     private javax.swing.JPanel mainpanel;
     private javax.swing.JMenuBar menumainpanel;
+    private javax.swing.JMenuItem menumanual;
     private javax.swing.JMenuItem menuquit;
     private javax.swing.JMenuItem menureport;
     private javax.swing.JMenuItem menusettings;

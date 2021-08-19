@@ -1,14 +1,12 @@
 package me.sanyasho.ncalc;
 
-import java.awt.Font;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
 import javax.swing.ImageIcon;
-import javax.swing.JFileChooser;
+import static me.sanyasho.ncalc.NCalcPreMain.datadir;
 
 public class NCalcSettings extends javax.swing.JFrame {
 
@@ -28,7 +26,7 @@ public class NCalcSettings extends javax.swing.JFrame {
         close = new javax.swing.JButton();
 
         setTitle("Nether Calculator - Settings");
-        setIconImage(new ImageIcon(getClass().getResource("/assets/textures/gui/dynmap/markers/gear.png")).getImage());
+        setIconImage(new ImageIcon(getClass().getResource("/icons/preferences-desktop.png")).getImage());
         setLocationByPlatform(true);
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -42,7 +40,7 @@ public class NCalcSettings extends javax.swing.JFrame {
 
         langtext.setText("Language:");
 
-        save.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/textures/gui/apply.png"))); // NOI18N
+        save.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/media-floppy.png"))); // NOI18N
         save.setText("Save");
         save.setIconTextGap(2);
         save.addActionListener(new java.awt.event.ActionListener() {
@@ -57,7 +55,7 @@ public class NCalcSettings extends javax.swing.JFrame {
 
         defmode.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nether to Overworld", "Overworld to Nether" }));
 
-        close.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/textures/gui/cancel.png"))); // NOI18N
+        close.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/process-stop.png"))); // NOI18N
         close.setText("Close");
         close.setIconTextGap(2);
         close.addActionListener(new java.awt.event.ActionListener() {
@@ -119,7 +117,7 @@ public class NCalcSettings extends javax.swing.JFrame {
         // Mount config
         Properties conffile = new Properties();
         try {
-            conffile.load(new FileInputStream("config.yml"));
+            conffile.load(new FileInputStream(datadir + "config.yml"));
         } catch(IOException ex) {
             System.out.println("[Options] -> " + ex);
         }
@@ -147,7 +145,7 @@ public class NCalcSettings extends javax.swing.JFrame {
             writeconfigfile.setProperty("defmode", System.getProperty("defmode"));
             
             // Write
-            writeconfigfile.store(new FileOutputStream("config.yml"), null);
+            writeconfigfile.store(new FileOutputStream(datadir + "config.yml"), null);
 
         } catch (FileNotFoundException ex) {
             System.out.println("[Options] -> " + ex);
@@ -159,28 +157,23 @@ public class NCalcSettings extends javax.swing.JFrame {
 
     private void ncalcoptionsopened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_ncalcoptionsopened
         
-        System.setProperty("devmode", "0");
-        if(System.getProperty("devmode").startsWith("1")) {
-            System.out.println("[CLASS] -> " + '"'+NCalcSettings.class.getName()+'"');
-        } else {}
-        
         Properties conffile = new Properties();
         try {
-            conffile.load(new FileInputStream("config.yml"));
+            conffile.load(new FileInputStream(datadir + "config.yml"));
         } catch(IOException ex) {
             System.out.println("[Options] -> " + ex);
         }
         
         Properties enus = new Properties();
         try {
-            enus.load(NCalcSettings.class.getResourceAsStream("/assets/lang/en_US.properties"));
+            enus.load(NCalcSettings.class.getResourceAsStream("/lang/en_US.properties"));
         } catch(IOException ex) {
             System.out.println("[Options] -> [FATAL] -> " + ex);
         }
         
         Properties ruru = new Properties();
         try {
-            ruru.load(NCalcSettings.class.getResourceAsStream("/assets/lang/ru_RU.properties"));
+            ruru.load(NCalcSettings.class.getResourceAsStream("/lang/ru_RU.properties"));
         } catch(IOException ex) {
             System.out.println("[Options] -> [FATAL] -> " + ex);
         }
@@ -220,13 +213,6 @@ public class NCalcSettings extends javax.swing.JFrame {
         this.setVisible(false);
         new NCalcMain().setVisible(true);
     }//GEN-LAST:event_closeActionPerformed
-
-    public static void main(String args[]) {
-        
-        java.awt.EventQueue.invokeLater(() -> {
-            new NCalcSettings().setVisible(true);
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton close;
