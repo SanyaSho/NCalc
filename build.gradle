@@ -12,7 +12,7 @@ jar {
    manifest {
       attributes(
          "Manifest-Version": "1.0",
-         "Main-Class": "me.sanyasho.ncalc.NCalcMain"
+         "Main-Class": "me.sanyasho.ncalc.NCalcPreMain"
       )
    }
 }
